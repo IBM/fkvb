@@ -1,0 +1,19 @@
+dist: bionic
+language: cpp
+compiler: gcc
+#sudo: required
+
+addons:
+  apt:
+    packages:
+     - build-essential
+
+script:
+ - make
+
+notifications:
+  email:
+    recipients:
+      - ddi@zurich.ibm.com
+    on_success: never # default: change
+    on_failure: always # default: always
