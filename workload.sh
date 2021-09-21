@@ -45,13 +45,13 @@ fi
 if [[ $1 == "LOAD" ]]; then
 	for c in $(seq 0 $(( ${NR_LOADING_CLIENTS} -1 )));do
 		echo "Spawning $c"
-		LD_LIBRARY_PATH=${LB} ${EXEC} -f "DUMMY" --xput ${OUT_DIR}/${c}.load.xput.out  --freq ${FREQ} --seed ${SEED} -u 13 --t_population ${NR_LOADING_THREADS} -t 0 --num_keys ${NUM_KEYS} --key_size ${KEY_SIZE} --value_size const${VALUE_SIZE} --key_type random --config_file ${CLUSTER_FILE} --id ${c} --num_clients ${NR_LOADING_CLIENTS} 2>${OUT_DIR}/${c}.load.err | tee ${OUT_DIR}/${c}.load.out  &
+		LD_LIBRARY_PATH=${LB}:${LB_LIBRARY_PATH} ${EXEC} -f "DUMMY" --xput ${OUT_DIR}/${c}.load.xput.out  --freq ${FREQ} --seed ${SEED} -u 13 --t_population ${NR_LOADING_THREADS} -t 0 --num_keys ${NUM_KEYS} --key_size ${KEY_SIZE} --value_size const${VALUE_SIZE} --key_type random --config_file ${CLUSTER_FILE} --id ${c} --num_clients ${NR_LOADING_CLIENTS} 2>${OUT_DIR}/${c}.load.err | tee ${OUT_DIR}/${c}.load.out  &
 	done
 	echo "Clients spawned. Now waiting for them to end"
 	wait
 elif [[ $1 == "RUN" ]]; then
 	for c in $(seq 0 $(( ${NR_CLIENTS} - 1 )));do
-		LD_LIBRARY_PATH=${LB} ${EXEC} -f "DUMMY" --xput ${OUT_DIR}/${c}.run.xput.out  --freq ${FREQ} --seed ${SEED} -u 13 --t_population 0 -t ${NR_THREADS} --num_keys ${NUM_KEYS} --key_size ${KEY_SIZE} --value_size const${VALUE_SIZE} --key_type random --config_file ${CLUSTER_FILE} --id ${c} --dap uniform --read_perc 0 --update_perc 0 --generic_perc ${RO_PERC} --generic_ops ${OPS_PER_TX} --grv_cache_ms ${GRV_CACHE_MS} --dur sec${TEST_SEC} --key_type random  --sleep_time_us ${THINK_TIME}  2>${OUT_DIR}/${c}.run.err | tee ${OUT_DIR}/${c}.run.out &
+		LD_LIBRARY_PATH=${LB}:${LD_LIBRARY_PATH} ${EXEC} -f "DUMMY" --xput ${OUT_DIR}/${c}.run.xput.out  --freq ${FREQ} --seed ${SEED} -u 13 --t_population 0 -t ${NR_THREADS} --num_keys ${NUM_KEYS} --key_size ${KEY_SIZE} --value_size const${VALUE_SIZE} --key_type random --config_file ${CLUSTER_FILE} --id ${c} --dap uniform --read_perc 0 --update_perc 0 --generic_perc 100 --generic_rp ${RO_PERCENTAGE} --generic_ops ${OPS_PER_TX} --grv_cache_ms ${GRV_CACHE_MS} --dur sec${TEST_SEC} --key_type random  --sleep_time_us ${THINK_TIME}  2>${OUT_DIR}/${c}.run.err | tee ${OUT_DIR}/${c}.run.out &
 	done
 	echo "Clients spawned. Now waiting for them to end"
 	wait
