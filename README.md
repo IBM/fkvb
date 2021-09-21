@@ -21,6 +21,7 @@ The important parameters are
 * NUM_KEYS that is the number of keys to insert in the DB
 * KEY/VALUE_SIZE that are the (fixed) size of keys and of the corresponding values
 * OUT_DIR that is a directory where some output files are written
+* ID that is the id of each client process
 * SEED that is the random seed used by the clients
 
 If running the loading phase on multiple machines, take care that the --num_clients parameter is the total amount of client processes, and that the ids are progressive from 0 to num_clients-1
