@@ -23,6 +23,7 @@ The important parameters are
 * OUT_DIR that is a directory where some output files are written
 * ID that is the id of each client process
 * SEED that is the random seed used by the clients
+* FREQ that is the nominal frequency in Hz of the CPU
 
 If running the loading phase on multiple machines, take care that the --num_clients parameter is the total amount of client processes, and that the ids are progressive from 0 to num_clients-1
 
@@ -40,6 +41,22 @@ Important parameters are
 * TEST_SEC that is the duration in seconds of the test
 * NR_CLIENTS/THREADS that is the number of clients/threads per client that are spawned
 * THINK_TIME that is the time in useconds that a thread waits after compelting a transaction before starting a new one
+* FREQ that is the nominal frequency in Hz of the CPU
+
+## Post-processing the results
+Once a RUN test has finished, each process will generate a file called ID.xput.runxput that contains statistics (throughput and latency) for each thread in the process, at a one-second granularity.
+The `process.sh` script can be used to produce an aggregate set of statistics for each process. This scripts invokes the `xput-process` script, that averages the statistics of each thread in a process, and produces a file ID.runxput with such averaged statistics, at a one-second granularity.
+Important parameters for `process.sh` are
+
+* RESULTS, that has to point to the same result directory supplied to the `workload RUN` invocation
+* MIN/MAX_ID, that are the min and max ids of the processes for which one wants the stats to be produced. For each id, a different file is produced
+* FREQ, that is the nominal frequency in Hz of the CPU
+
+For the supplied `workload.sh` file, the following statistics are of interest (all latencies are in microseconds):
+* Second: the time corresponding to the subsequent statistics
+* Xput: the throughput, in transactions per second
+* avg/p50/p99_generic: the average/median/99-th percentile latency of operations. As of now, this statistic assumes `generic_perc 100` in workload.sh
+* avg/p50/p99_init/commit: the average/median/99-th percentile latency of init/commit operations.
 
 ## License
 
