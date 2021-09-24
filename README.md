@@ -24,6 +24,7 @@ The important parameters are
 * ID that is the id of each client process
 * SEED that is the random seed used by the clients
 * FREQ that is the nominal frequency in Hz of the CPU
+* CLNT_KNOBS is the set of knobs passed to the FDB client (as of now, only batching parameters)
 
 If running the loading phase on multiple machines, take care that the --num_clients parameter is the total amount of client processes, and that the ids are progressive from 0 to num_clients-1
 
@@ -42,6 +43,7 @@ Important parameters are
 * NR_CLIENTS/THREADS that is the number of clients/threads per client that are spawned
 * THINK_TIME that is the time in useconds that a thread waits after compelting a transaction before starting a new one
 * FREQ that is the nominal frequency in Hz of the CPU
+* CLNT_KNOBS is the set of knobs passed to the FDB client (as of now, only batching parameters)
 
 ## Post-processing the results
 Once a RUN test has finished, each process will generate a file called ID.xput.runxput that contains statistics (throughput and latency) for each thread in the process, at a one-second granularity.
